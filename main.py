@@ -1,18 +1,16 @@
-import discord
 import os
+from discord.ext import commands
 
-client = discord.Client()
+bot = commands.Bot(command_prefix="!")
+TOKEN = os.getenv("DISCORD_TOKEN")
 
-@client.event
+@bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print(f"Logged in as {bot.user.name}({bot.user.id})")
 
-@client.event
-async def on_message(prettyspace):
-    if prettyspace.author == client.user:
-        return
+@bot.command()
+async def ping(ctx):
+    await ctx.send("pong")
 
-    if prettyspace.content.startswith('$hello'):
-        await prettyspace.channel.send('Hello!')
-
-client.run(os.getenv('TOKEN'))
+if __name__ == "__main__":
+    bot.run(TOKEN)
